@@ -1,8 +1,8 @@
 package davinci;
 
-import java.io.FileNotFoundException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import twitter4j.Query;
@@ -15,7 +15,7 @@ import twitter4j.auth.AccessToken;
 
 public class TwitterService {
 
-	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void main(String[] args) throws Exception {
 		TwitterFactory factory = new TwitterFactory();
 	    AccessToken accessToken = loadAccessToken();
 	    Twitter twitter = factory.getInstance();
@@ -28,13 +28,16 @@ public class TwitterService {
             do {
                 result = twitter.search(query);
                 List<Status> tweets = result.getTweets();
-                for (Status tweet : tweets) {
-                	String line = "@" + tweet.getUser().getScreenName() + " - " + tweet.getText();
+                String line = null;
+                PrintWriter writer = null;
+                for (int i = 0; i< tweets.size(); i++) {
+                	line = "@" + tweets.get(i).getUser().getScreenName() + " - " + tweets.get(i).getText();
                 	System.out.println(line);
-                	PrintWriter writer = new PrintWriter("/Users/aseferian/Desktop/Tw.txt", "UTF-8");
+                	writer = new PrintWriter(new BufferedWriter(new FileWriter("/Users/aseferian/Desktop/Tw.txt", true)));
                 	writer.println(line);
-                	writer.close();
+                	if(tweets.size() == 15) break;
                 }
+                writer.close();
             } while ((query = result.nextQuery()) != null);
             System.exit(0);
         } catch (TwitterException te) {
