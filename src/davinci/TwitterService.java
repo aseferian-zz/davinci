@@ -33,7 +33,7 @@ public class TwitterService {
                 for (int i = 0; i< tweets.size(); i++) {
                 	line = "@" + tweets.get(i).getUser().getScreenName() + " - " + tweets.get(i).getText();
                 	System.out.println(line);
-                	writer = new PrintWriter(new BufferedWriter(new FileWriter("/Users/aseferian/Desktop/Tw.txt", true)));
+                	writer = new PrintWriter(new BufferedWriter(new FileWriter("/Users/aseferian/Documents/workspace/davinci/src/davinci/Tw.txt", true)));
                 	writer.println(line);
                 	if(tweets.size() == 15) break;
                 }
